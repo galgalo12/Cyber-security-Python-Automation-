@@ -2,14 +2,12 @@ from datetime import datetime
 import json
 
 # Approved users and their assigned devices
-#
 approved_access = {
     "keith": "789uk",
     "john": "jfklsdjf",
     "jimmy": "9djflksf",
     "sarah": "342dfsf",
 }
-# dictionary formate
 
 
 def login(username, device_id):
@@ -23,6 +21,7 @@ def login(username, device_id):
         "user_approved": False,
         "device_authorized": False,
         "access_granted": False,
+        "status": "DENIED"
     }
 
     if username in approved_access:
@@ -31,15 +30,14 @@ def login(username, device_id):
         if device_id == approved_access[username]:
             log_event["device_authorized"] = True
             log_event["access_granted"] = True
+            log_event["status"] = "GRANTED"
 
-    # Print JSON result
-    # Convert the login event dictionary into a formatted JSON string
-    # indent=4 makes the output human-readable for logs, audits, and SIEM ingestion
-    print(json.dumps(log_event, indent=5))
+    # Print formatted JSON
+    print(json.dumps(log_event, indent=4))
 
 
 def get_user_input():
-    username = input("Enter username: ").lower()
+    username = input("Enter username: ")
     device_id = input("Enter device ID: ")
     login(username, device_id)
 
